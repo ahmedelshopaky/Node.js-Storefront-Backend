@@ -1,15 +1,34 @@
-import express, { Request, Response } from 'express'
-import bodyParser from 'body-parser'
+import express from 'express';
+import bodyParser from 'body-parser';
+import routes from './routes/index';
 
-const app: express.Application = express()
-const address: string = "0.0.0.0:3000"
+const app = express();
+const HOST = 'localhost';
+const PORT = 8080;
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(routes);
 
-app.get('/', function (req: Request, res: Response) {
-    res.send('Hello World!')
-})
+app.listen(PORT, HOST, () => {
+  console.log(`starting app on: ${HOST}:${PORT}`);
+});
 
-app.listen(3000, function () {
-    console.log(`starting app on: ${address}`)
-})
+// Not Found MW
+app.use((req: express.Request, res: express.Response): void => {
+  res.status(404).json({ response: '404 NOT FOUND' });
+});
+
+// Error MW
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: Function
+  ): void => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+  }
+);
+
+export default app;

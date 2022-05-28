@@ -5,38 +5,45 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## API Endpoints
 #### Products
-- Index 
-- Show (args: product id)
-- Create (args: Product)[token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index                                                                 'products' [GET]
+- Show (args: product id)                                               'products/:id' [GET]
+- Create (args: Product)[token required]                                'products' [POST]
+- Top 5 most popular products                                           'products/top-five' [GET]
+- Products by category (args: product category)                         'products/category/:id' [GET]
 
 #### Users
-- Index [token required]
-- Show (args: id)[token required]
-- Create (args: User)[token required]
+- Index [token required]                                                'users' [GET]
+- Show (args: id)[token required]                                       'users/:id' [GET]
+- Create (args: User)[token required]                                   'users' [POST]
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[token required]                 'current-orders/user/:id' [GET]
+- Completed Orders by user (args: user id)[token required]              'completed-orders/user/:id' [GET]
 
 ## Data Shapes
 #### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+- id: SERIAL PRIMARY KEY
+- name: VARCHAR(100) NOT NULL
+- price: NUMBER NOT NULL
+- category_id: FOREIGN KEY
+
+### Category
+- id: SERIAL PRIMARY KEY
+- name: VARCHAR(100) NOT NULL
 
 #### User
-- id
-- firstName
-- lastName
-- password
+- id: SERIAL PRIMARY KEY
+- first_name: VARCHAR(100) NOT NULL
+- last_name: VARCHAR(100) NOT NULL
+- password: TEXT NOT NULL
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+#### Order
+- id: SERIAL PRIMARY KEY NOT NULL
+- status: ENUM ('active', 'complete') NOT NULL
 
+### OrderProduct
+- id: SERIAL PRIMARY KEY
+- order_id: FOREIGN KEY
+- product_id: FOREIGN KEY
+- user_id: FOREIGN KEY
+- quantity: NUMBER

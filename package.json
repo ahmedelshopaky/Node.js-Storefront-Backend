@@ -1,22 +1,55 @@
 {
-  "name": "storefront_backend",
-  "version": "0.1.0",
+  "name": "node.js-storefront-backend",
+  "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "index.js",
   "scripts": {
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "start": "nodemon src/server.ts",
+    "build": "npx tsc",
+    "jasmine": "jasmine",
+    "test": "npx tsc && jasmine",
+    "prettify": "prettier --config .prettierrc.json src --write",
+    "lint": "eslint . --ext .ts"
   },
-  "author": "Udacity",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedelshopaky/Node.js-Storefront-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@types/express": "^4.17.9",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.1",
-    "typescript": "^4.1.3"
+  "bugs": {
+    "url": "https://github.com/ahmedelshopaky/Node.js-Storefront-Backend/issues"
   },
+  "homepage": "https://github.com/ahmedelshopaky/Node.js-Storefront-Backend#readme",
   "devDependencies": {
-    "tsc-watch": "^4.2.9"
+    "@types/express": "^4.17.13",
+    "@types/jasmine": "^4.0.3",
+    "@types/node": "^17.0.35",
+    "@types/pg": "^8.6.5",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jasmine": "^4.1.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2",
+    "supertest": "^6.2.3",
+    "ts-node": "^10.8.0",
+    "tsc-watch": "^5.0.3",
+    "typescript": "^4.7.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "db-migrate": "^0.11.13",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.3"
   }
 }
