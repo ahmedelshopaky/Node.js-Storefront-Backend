@@ -22,28 +22,29 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 ## Data Shapes
 #### Product
-- id: SERIAL PRIMARY KEY
-- name: VARCHAR(100) NOT NULL
-- price: NUMBER NOT NULL
-- category_id: FOREIGN KEY
+- id SERIAL PRIMARY KEY
+- name VARCHAR(100) NOT NULL
+- price DECIMAL NOT NULL
+- category_id SERIAL REFERENCES categories(id) ON DELETE CASCADE
 
 ### Category
-- id: SERIAL PRIMARY KEY
-- name: VARCHAR(100) NOT NULL
+- id SERIAL PRIMARY KEY
+- name VARCHAR(100) NOT NULL
 
 #### User
-- id: SERIAL PRIMARY KEY
-- first_name: VARCHAR(100) NOT NULL
-- last_name: VARCHAR(100) NOT NULL
-- password: TEXT NOT NULL
+- id SERIAL PRIMARY KEY
+- first_name VARCHAR(100) NOT NULL
+- last_name VARCHAR(100) NOT NULL
+- username VARCHAR(100) NOT NULL
+- password TEXT NOT NULL
 
 #### Order
-- id: SERIAL PRIMARY KEY NOT NULL
-- status: ENUM ('active', 'complete') NOT NULL
+- id SERIAL PRIMARY KEY NOT NULL
+- status ENUM ('active', 'complete') NOT NULL
 
 ### OrderProduct
-- id: SERIAL PRIMARY KEY
-- order_id: FOREIGN KEY
-- product_id: FOREIGN KEY
-- user_id: FOREIGN KEY
-- quantity: NUMBER
+- id SERIAL PRIMARY KEY
+- order_id SERIAL REFERENCES orders(id) ON DELETE CASCADE
+- product_id SERIAL REFERENCES products(id) ON DELETE CASCADE
+- user_id SERIAL REFERENCES users(id) ON DELETE CASCADE
+- quantity INTEGER
