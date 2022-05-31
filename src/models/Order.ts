@@ -1,6 +1,5 @@
-import Client from '../database';
+import client from '../database';
 import { OrderProductType, OrderProduct } from './OrderProduct';
-import { ProductType } from './Product';
 
 enum Status {
   'active',
@@ -10,14 +9,12 @@ enum Status {
 export type OrderType = {
   id?: number;
   status: Status;
-  products: ProductType[];
-  user_id: number;
 };
 
 export class Order {
   index = async (): Promise<OrderType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql = 'SELECT * FROM orders';
       const result = await conn.query(sql);
       conn.release();
@@ -29,17 +26,18 @@ export class Order {
 
   create = async (
     order: OrderType,
-    orderedProducts: OrderProductType[]
+    orderedProducts: OrderProductType
   ): Promise<OrderType[]> => {
     try {
-      const conn = await Client.connect();
-      const sql = 'INSERT INTO orders (status) VALUES ($1)';
-      const result = await conn.query(sql, [order.status]);
+      const conn = await client.connect();
+      const sql = 'INSERT INTO orders (status) VALUES ($1) RETURNING *';
+      const result = await conn.query(sql, [order.status || 'active']);
       conn.release();
       const storedOrder = result.rows[0];
       // create order product
       const storedOrderProducts = await new OrderProduct().create(
-        orderedProducts
+        orderedProducts,
+        storedOrder.id
       );
       return { ...storedOrder, products: storedOrderProducts };
     } catch (err) {
@@ -47,9 +45,9 @@ export class Order {
     }
   };
 
-  get_current_orders = async (user_id: number): Promise<OrderType[]> => {
+  getCurrentOrders = async (user_id: number): Promise<OrderType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql =
         "SELECT orders.id, status, user_id FROM orders INNER JOIN order_products ON orders.id=order_products.order_id WHERE user_id=($1) AND status='active'";
       const result = await conn.query(sql, [user_id]);
@@ -60,9 +58,9 @@ export class Order {
     }
   };
 
-  get_completed_orders = async (user_id: number): Promise<OrderType[]> => {
+  getCompletedOrders = async (user_id: number): Promise<OrderType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql =
         "SELECT orders.id, status, user_id FROM orders INNER JOIN order_products ON orders.id=order_products.order_id WHERE user_id=($1) AND status='complete'";
       const result = await conn.query(sql, [user_id]);

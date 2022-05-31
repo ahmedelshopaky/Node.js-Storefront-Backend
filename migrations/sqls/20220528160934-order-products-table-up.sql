@@ -3,5 +3,5 @@ CREATE TABLE order_products (
     order_id SERIAL REFERENCES orders(id) ON DELETE CASCADE,
     product_id SERIAL REFERENCES products(id) ON DELETE CASCADE,
     user_id SERIAL REFERENCES users(id) ON DELETE CASCADE,
-    quantity INTEGER DEFAULT 0
+    quantity INTEGER NOT NULL -- DEFAULT 0
 );

@@ -1,4 +1,4 @@
-import Client from '../database';
+import client from '../database';
 
 enum Rate {
   'POOR',
@@ -18,7 +18,7 @@ export type ProductType = {
 export class Product {
   index = async (): Promise<ProductType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql = 'SELECT * FROM products';
       const result = await conn.query(sql);
       return result.rows;
@@ -29,7 +29,7 @@ export class Product {
 
   show = async (id: number): Promise<ProductType> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql = 'SELECT * FROM products WHERE id=($1)';
       const result = await conn.query(sql, [id]);
       return result.rows[0];
@@ -40,9 +40,9 @@ export class Product {
 
   create = async (product: ProductType): Promise<ProductType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql =
-        'INSERT INTO products (name, price, category_id) VALUES ($1, $2, $3)';
+        'INSERT INTO products (name, price, category_id) VALUES ($1, $2, $3) RETURNING *';
       const result = await conn.query(sql, [
         product.name,
         product.price,
@@ -55,10 +55,10 @@ export class Product {
     }
   };
 
-  get_top_five = async (): Promise<ProductType[]> => {
+  getTopFiveProducts = async (): Promise<ProductType[]> => {
     try {
-      const conn = await Client.connect();
-      const sql = 'SELECT * FROM products ORDER BY rate LIMIT 5';
+      const conn = await client.connect();
+      const sql = 'SELECT * FROM products ORDER BY rate DESC LIMIT 5';
       const result = await conn.query(sql);
       return result.rows;
     } catch (err) {
@@ -66,9 +66,11 @@ export class Product {
     }
   };
 
-  get_by_category = async (category_id: number): Promise<ProductType[]> => {
+  getProductByCategory = async (
+    category_id: number
+  ): Promise<ProductType[]> => {
     try {
-      const conn = await Client.connect();
+      const conn = await client.connect();
       const sql = 'SELECT * FROM products WHERE category_id=($1)';
       const result = await conn.query(sql, [category_id]);
       return result.rows;
