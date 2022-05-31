@@ -7,7 +7,7 @@ import categoryRoutes from './handlers/CategoryHandler';
 
 const app = express();
 const HOST = 'localhost';
-const PORT = (process.env.PORT as unknown as number) || 8080;
+const PORT = process.env.PORT as unknown as number;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -34,14 +34,12 @@ const create = async (
       status: req.body.status,
     };
     const orderProduct: OrderProductType = {
-      products_id: req.body.products_id,
+      products: req.body.products,
       user_id: req.body.user_id,
-      quantity: req.body.quantity,
     };
     const ordered = await orderInstance.create(order, orderProduct);
     res.json({ order: ordered });
   } catch (err) {
-    console.log(err);
     res.status(404).json({ respone: 'Not Found' });
   }
 };

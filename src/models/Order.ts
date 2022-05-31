@@ -33,13 +33,9 @@ export class Order {
       const sql = 'INSERT INTO orders (status) VALUES ($1) RETURNING *';
       const result = await conn.query(sql, [order.status || 'active']);
       conn.release();
-      const storedOrder = result.rows[0];
       // create order product
-      const storedOrderProducts = await new OrderProduct().create(
-        orderedProducts,
-        storedOrder.id
-      );
-      return { ...storedOrder, products: storedOrderProducts };
+      await new OrderProduct().create(orderedProducts, result.rows[0].id);
+      return result.rows[0];
     } catch (err) {
       throw new Error(`Cannot create order: ${err}`);
     }
