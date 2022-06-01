@@ -5,7 +5,6 @@ export type OrderProductType = {
   // order_id: number;
   products: [{ id: number; quantity: number }];
   user_id: number;
-  quantity?: number;
 };
 
 export class OrderProduct {

@@ -33,7 +33,7 @@ export class Order {
       const sql = 'INSERT INTO orders (status) VALUES ($1) RETURNING *';
       const result = await conn.query(sql, [order.status || 'active']);
       conn.release();
-      // create order product
+      // create order product // TODO: what if product is not found?
       await new OrderProduct().create(orderedProducts, result.rows[0].id);
       return result.rows[0];
     } catch (err) {
