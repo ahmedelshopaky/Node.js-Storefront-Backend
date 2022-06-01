@@ -17,4 +17,16 @@ export class Category {
       throw new Error(`Cannot create category: ${err}`);
     }
   }
+
+  index = async (): Promise<CategoryType[]> => {
+    try {
+      const conn = await client.connect();
+      const sql = 'SELECT * FROM categories';
+      const result = await conn.query(sql);
+      conn.release();
+      return result.rows;
+    } catch (err) {
+      throw new Error(`Cannot get categories: ${err}`);
+    }
+  };
 }

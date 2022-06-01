@@ -1,4 +1,4 @@
-import { Product } from '../../models/Product';
+import { Product, ProductType } from '../../models/Product';
 
 const product = new Product();
 
@@ -21,5 +21,17 @@ describe('Product', () => {
 
   it('product.getProductByCategory should be defined', () => {
     expect(product.getProductByCategory).toBeDefined();
+  });
+
+  it('fetch all products', async function () {
+    const productInstance: ProductType = {
+      name: 'Legion Laptop',
+      price: 800,
+      category_id: 1,
+    };
+    await product.create(productInstance);
+    const products = await product.index();
+
+    expect(products.length).toBeGreaterThan(0);
   });
 });

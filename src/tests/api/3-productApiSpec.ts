@@ -15,14 +15,11 @@ describe('Product API', () => {
   });
 
   it('should create a product [token required]', async () => {
-    const response: Response = await request
-      .post('/products')
-      // .set('authorization', token)
-      .send({
-        name: 'My Product',
-        price: 1500,
-        category_id: 1,
-      });
+    const response: Response = await request.post('/products').send({
+      name: 'My Product',
+      price: 1500,
+      category_id: 1,
+    });
     expect(response.status).toBe(401);
   });
 

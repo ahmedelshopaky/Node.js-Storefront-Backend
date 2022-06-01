@@ -47,7 +47,7 @@ const show = async (
   }
 };
 
-const create = async (
+export const create = async (
   req: express.Request,
   res: express.Response
 ): Promise<void> => {
@@ -65,7 +65,7 @@ const create = async (
   }
 };
 
-const login = async (
+export const login = async (
   req: express.Request,
   res: express.Response
 ): Promise<void> => {

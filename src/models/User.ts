@@ -64,7 +64,7 @@ export class User {
   login = async (
     username: string,
     password: string
-  ): Promise<UserType | null> => {
+  ): Promise<object | null> => {
     try {
       const conn = await client.connect();
       const sql = 'SELECT * FROM users WHERE username=($1)';
@@ -73,7 +73,7 @@ export class User {
       if (result.rows.length > 0) {
         const user = result.rows[0];
         if (bcrypt.compareSync(password + BCRYPT_PASSWORD, user.password)) {
-          return user;
+          return { id: user.id, username: user.username };
         }
       }
       return null;

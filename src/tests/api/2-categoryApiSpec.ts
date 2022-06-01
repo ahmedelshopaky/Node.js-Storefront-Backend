@@ -5,12 +5,9 @@ const request: supertest.SuperTest<Test> = supertest(app);
 
 describe('Category API', () => {
   it('should create a category [token required]', async () => {
-    const response: Response = await request
-      .post('/categories')
-      // .set('authorization', token)
-      .send({
-        name: 'My Category',
-      });
+    const response: Response = await request.post('/categories').send({
+      name: 'My Category',
+    });
     expect(response.status).toBe(401);
   });
 });
